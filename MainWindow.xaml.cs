@@ -16,9 +16,13 @@ namespace praktika28_Shein
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow init;
+
         public MainWindow()
         {
             InitializeComponent();
+            init = this; // Запоминаем главное окно
+            DataContext = new VM_Pages(); // в качестве контекста, указываем модель ViewModelPages
         }
     }
 }
