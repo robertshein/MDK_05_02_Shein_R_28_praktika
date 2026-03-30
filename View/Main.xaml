@@ -15,23 +15,42 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
     </Page.Resources>
+
     <Grid>
-        <ListView ItemsSource="{Binding Tasks}" HorizontalContentAlignment="Stretch" Margin="0,0,0,45">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,5">
+            <Label Content="Поиск:" VerticalAlignment="Center" FontSize="14"/>
+            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                     Width="200" Margin="5,0,0,0" 
+                     VerticalAlignment="Center" 
+                     FontSize="12"
+                     Padding="5,2"/>
+        </StackPanel>
+
+        <ListView Grid.Row="1" 
+                  ItemsSource="{Binding Tasks}" 
+                  HorizontalContentAlignment="Stretch" 
+                  Margin="0,0,0,5">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <elements:Item DataContext="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Style="{StaticResource Update}"
+
+        <Button Grid.Row="2" 
+                Style="{StaticResource Update}"
                 Command="{Binding OnAddTask}"
                 Content="Добавить"
                 Height="25"
                 Width="70"
-                VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
-                Margin="0,0,10,10"
-                Grid.Column="1">
+                Margin="0,0,10,10">
             <Button.Effect>
                 <DropShadowEffect Opacity="0.5" BlurRadius="3" ShadowDepth="3"/>
             </Button.Effect>

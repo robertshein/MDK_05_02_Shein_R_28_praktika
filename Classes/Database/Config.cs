@@ -6,9 +6,9 @@ namespace praktika28_Shein.Classes.Database
     public static class Config
     {
         public static readonly string connection =
-            "server=192.168.0.111;" +
+            "server=127.0.0.1;" +
             "uid=root;" +
-            "pwd=root;" +
+            "pwd=;" +
             "database=TaskManager;";
 
         public static readonly MySqlServerVersion version = new MySqlServerVersion(new Version(8, 0, 11));

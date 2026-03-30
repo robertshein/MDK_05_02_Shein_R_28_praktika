@@ -1,22 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using praktika28_Shein.Classes.Database;
 using praktika28_Shein.Models;
-using System.Linq;
 
-namespace praktika28_Shein.Context
+public class TaskContext : DbContext
 {
-    public class TaskContext : DbContext
-    {
-        public DbSet<Tasks> Tasks { get; set; }
+    public DbSet<Tasks> Tasks { get; set; }
+    public DbSet<Priority> Priorities { get; set; }
 
-        public TaskContext()
-        {
-            Database.EnsureCreated();
-            Tasks.Load();
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseMySql(Config.connection, Config.version);
-        }
+    public TaskContext()
+    {
+        Database.EnsureCreated();
+        Tasks.Load();
+        Priorities.Load();
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Tasks>()
+            .HasOne(t => t.Priority)
+            .WithMany()
+            .HasForeignKey(t => t.PriorityId);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseMySql(Config.connection, Config.version);
     }
 }

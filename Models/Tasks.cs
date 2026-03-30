@@ -1,7 +1,6 @@
 ﻿using praktika28_Shein.Classes;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
@@ -10,12 +9,14 @@ namespace praktika28_Shein.Models
     public class Tasks : Notification
     {
         public int Id { get; set; }
+
         private string name;
-        private string priority;
+        private int priorityId;
         private DateTime dateExecute;
         private string comment;
         private bool done;
         private bool isEnable;
+
         public string Name
         {
             get => name;
@@ -33,23 +34,28 @@ namespace praktika28_Shein.Models
                 }
             }
         }
-        public string Priority
+
+        public int PriorityId
         {
-            get => priority;
+            get => priorityId;
             set
             {
-                if (string.IsNullOrWhiteSpace(value) || value.Length > 30)
+                if (value <= 0)
                 {
-                    MessageBox.Show("Приоритет не должен быть пустым и не более 30 символов.",
+                    MessageBox.Show("Выберите корректный приоритет.",
                                     "Некорректный ввод значения", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
-                    priority = value;
+                    priorityId = value;
                     OnPropertyChanged();
                 }
             }
         }
+
+        [ForeignKey(nameof(PriorityId))]
+        public virtual Priority Priority { get; set; }
+
         public DateTime DateExecute
         {
             get => dateExecute;
@@ -67,6 +73,7 @@ namespace praktika28_Shein.Models
                 }
             }
         }
+
         public string Comment
         {
             get => comment;
@@ -84,6 +91,7 @@ namespace praktika28_Shein.Models
                 }
             }
         }
+
         public bool Done
         {
             get => done;
@@ -94,6 +102,7 @@ namespace praktika28_Shein.Models
                 OnPropertyChanged(nameof(IsDoneText));
             }
         }
+
         [NotMapped]
         public bool IsEnable
         {
@@ -105,21 +114,24 @@ namespace praktika28_Shein.Models
                 OnPropertyChanged(nameof(IsEnableText));
             }
         }
+
         [NotMapped]
         public string IsEnableText => IsEnable ? "Сохранить" : "Изменить";
+
         [NotMapped]
         public string IsDoneText => Done ? "Не выполнено" : "Выполнено";
+
         [NotMapped]
         public ICommand OnEdit => new RelayCommand(obj =>
         {
             IsEnable = !IsEnable;
             if (!IsEnable)
             {
-                // Сохраняем изменения в БД
                 var context = (MainWindow.init.DataContext as ViewModels.VM_Pages)?.vm_tasks?.tasksContext;
                 context?.SaveChanges();
             }
         });
+
         [NotMapped]
         public ICommand OnDelete => new RelayCommand(obj =>
         {
@@ -134,6 +146,7 @@ namespace praktika28_Shein.Models
                 vm?.vm_tasks.tasksContext.SaveChanges();
             }
         });
+
         [NotMapped]
         public ICommand OnDone => new RelayCommand(obj =>
         {

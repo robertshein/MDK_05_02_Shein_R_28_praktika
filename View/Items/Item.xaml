@@ -24,18 +24,15 @@
             <DropShadowEffect Opacity="0.1"/>
         </Grid.Effect>
 
-        <!-- Icon -->
         <Image Width="40" Height="40" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left"
                Source="/Images/ic-task.png"/>
 
-        <!-- Fields container (two columns) -->
         <Grid Margin="60,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="270"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Left column: Name and Priority -->
             <StackPanel Grid.Column="0" Margin="10,0,10,0">
                 <Grid Margin="0,0,0,10" Height="60" VerticalAlignment="Top" Background="White">
                     <Grid.Effect>
@@ -55,16 +52,17 @@
                         <DropShadowEffect Opacity="0.1"/>
                     </Grid.Effect>
                     <Label Content="Приоритет:" VerticalAlignment="Top" Margin="10,0,10,0"/>
-                    <TextBox Text="{Binding Priority}"
-                             IsEnabled="{Binding IsEnable}"
-                             VerticalContentAlignment="Center"
-                             Margin="10,25,10,0"
-                             VerticalAlignment="Top"
-                             Height="25"/>
+                    <ComboBox ItemsSource="{Binding DataContext.Priorities, RelativeSource={RelativeSource AncestorType=Page}}"
+              DisplayMemberPath="Name"
+              SelectedValuePath="Id"
+              SelectedValue="{Binding PriorityId, UpdateSourceTrigger=PropertyChanged}"
+              IsEnabled="{Binding IsEnable}"
+              Margin="10,25,10,0"
+              VerticalAlignment="Top"
+              Height="25"/>
                 </Grid>
             </StackPanel>
 
-            <!-- Right column: Date and Comment -->
             <StackPanel Grid.Column="1" Margin="10,0,10,0">
                 <Grid Height="60" VerticalAlignment="Top" Background="White">
                     <Grid.Effect>
